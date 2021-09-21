@@ -2,19 +2,6 @@
     "version": 4,
     "configurations": [
         {
-            "name": "Linux",
-            "compilerPath": "/usr/bin/gcc",
-            "compilerArgs": [],
-            "intelliSenseMode": "macos-gcc-arm",
-            "includePath": [
-                "${workspaceFolder}/**"
-            ],
-            "forcedInclude": [],
-            "cStandard": "gnu17",
-            "cppStandard": "gnu++17",
-            "defines": []
-        },
-        {
             "name": "Arduino",
             "compilerPath": "/home/kun/.arduino15/packages/esp8266/tools/xtensa-lx106-elf-gcc/3.0.4-gcc10.3-1757bed/bin/xtensa-lx106-elf-g++",
             "compilerArgs": [
@@ -31,7 +18,15 @@
             "includePath": [
                 "/home/kun/.arduino15/packages/esp8266/hardware/esp8266/3.0.2/tools/sdk/include",
                 "/home/kun/.arduino15/packages/esp8266/hardware/esp8266/3.0.2/tools/sdk/lwip2/include",
-                "/home/kun/Arduino/generated_examples/fingerPrint/.build/core",
+                "/home/kun/Arduino/TechnozoneFingerprint/.build/core",
+                "/home/kun/.arduino15/packages/esp8266/hardware/esp8266/3.0.2/cores/esp8266",
+                "/home/kun/.arduino15/packages/esp8266/hardware/esp8266/3.0.2/variants/generic",
+                "/home/kun/Arduino/libraries/Adafruit_Fingerprint_Sensor_Library",
+                "/home/kun/.arduino15/packages/esp8266/hardware/esp8266/3.0.2/libraries/SoftwareSerial/src",
+                "/home/kun/Arduino/libraries/ESP8266TimerInterrupt/src",
+                "/home/kun/.arduino15/packages/esp8266/hardware/esp8266/3.0.2/tools/sdk/include",
+                "/home/kun/.arduino15/packages/esp8266/hardware/esp8266/3.0.2/tools/sdk/lwip2/include",
+                "/home/kun/Arduino/TechnozoneFingerprint/.build/core",
                 "/home/kun/.arduino15/packages/esp8266/hardware/esp8266/3.0.2/cores/esp8266",
                 "/home/kun/.arduino15/packages/esp8266/hardware/esp8266/3.0.2/variants/generic",
                 "/home/kun/Arduino/libraries/Adafruit_Fingerprint_Sensor_Library",
@@ -50,6 +45,24 @@
             "cStandard": "c11",
             "cppStandard": "c++17",
             "defines": [
+                "__ets__",
+                "ICACHE_FLASH",
+                "_GNU_SOURCE",
+                "MMU_IRAM_SIZE=0x8000",
+                "MMU_ICACHE_SIZE=0x8000",
+                "NONOSDK22x_190703=1",
+                "F_CPU=80000000L",
+                "LWIP_OPEN_SRC",
+                "TCP_MSS=536",
+                "LWIP_FEATURES=1",
+                "LWIP_IPV6=0",
+                "ARDUINO=10815",
+                "ARDUINO_ESP8266_GENERIC",
+                "ARDUINO_ARCH_ESP8266",
+                "ARDUINO_BOARD=\"ESP8266_GENERIC\"",
+                "LED_BUILTIN=2",
+                "FLASHMODE_DOUT",
+                "ESP8266",
                 "__ets__",
                 "ICACHE_FLASH",
                 "_GNU_SOURCE",

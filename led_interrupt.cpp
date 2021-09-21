@@ -90,7 +90,7 @@ void set_led(const color_struct &color)
 
 void IRAM_ATTR rgb_led_handler()
 {
-    PRINT("HOHO interrupt!")
+    PRINT("[HOHO] interrupt!")
     static bool status = false;
     if (RGB.mode != BLINK)
         status = true;
@@ -105,9 +105,9 @@ void IRAM_ATTR rgb_led_handler()
         break;
     case FADE:
         set_led(RGB.color);
-        RGB.color -= 3;
-        Serial.print("po ");
-        Serial.println(RGB.color.c[0]);
+        RGB.color -= 1;
+        PRINT("po ");
+        PRINTLN(RGB.color.c[0]);
         
         if (RGB.color == 0)
         {
@@ -133,9 +133,10 @@ void update_led_status(MODES mode, COLORS color, uint32_t time = 2000, bool inve
     Serial.println(RGB.color.c[2]);
     RGB.mode = mode;
     if (mode == FADE)
-        ITimer.attachInterruptInterval(time * 1000 / 100, rgb_led_handler);
-    else if (mode == BLINK)
+        ITimer.attachInterruptInterval(time * 1000 / 256, rgb_led_handler);
+    else if (mode == BLINK) {
         ITimer.attachInterruptInterval(time * 400, rgb_led_handler);
+    }
     else
         ITimer.attachInterruptInterval(time * 1000, rgb_led_handler);
 }

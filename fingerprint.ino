@@ -3,11 +3,11 @@
 
 #define SERIAL_PINS 5,4
 #define LED_RED 13
-#define LED_GREEN 2 //12
+#define LED_GREEN 12 //12
 #define LED_BLUE 14
 #define BUTTON_PIN 16
 
-#define DEBUG
+//#define DEBUG
 
 #ifdef DEBUG
 #define PRINT(X) Serial.print(X);
@@ -18,7 +18,7 @@
 #define PRINTLN(X) 
 #endif
 
-#include "led_interrupt.hpp"
+#include "led_interrupt.cpp"
 
 SoftwareSerial mySerial(SERIAL_PINS);
 Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
@@ -38,14 +38,13 @@ void setup()
     delay(200);
     update_led_status(HOLD, RED, 100);
     finger.begin(57600);
-    Serial.print("templateCount: ");
-    Serial.println(finger.getTemplateCount());
     delay(200);         //TODO: WAITING LIBRARY
     if (finger.verifyPassword()) { 
         update_led_status(HOLD, GREEN, 300);
         delay(300);
     } else {
         for (;;) {
+            PRINT("FINGERPRINT SENSOR CONNECTION ERROR")
             update_led_status(HOLD, RED, 2000);
             delay(2500);
         }
@@ -59,9 +58,8 @@ void loop()
             add_fingerprint();
         }
     } else {
-        for (;;) {
-            scan_fingerprint();
-        }
+      scan_fingerprint();
+      delay(400);
     }
 }
 
@@ -78,6 +76,7 @@ int get_finger() {
           return i;
       }
     }
+    return 0;
 }
 
 void add_fingerprint() {
@@ -86,7 +85,6 @@ void add_fingerprint() {
     int index = get_finger();
     if(try_add_new_finger(index))
         resetFunc();
-
 }
 
 bool try_add_new_finger(const int &id) {
@@ -138,5 +136,20 @@ bool try_add_new_finger(const int &id) {
 }
 
 void scan_fingerprint() {
-    
+  uint8_t p = finger.getImage();
+
+  if (p != FINGERPRINT_OK)
+    return;
+
+  p = finger.image2Tz();
+  if (p != FINGERPRINT_OK)
+    return;
+
+  p = finger.fingerSearch();
+  if (p != FINGERPRINT_OK)
+    return;
+
+  digitalWrite(BUTTON_PIN, LOW);
+  delay(2000);
+  digitalWrite(BUTTON_PIN, HIGH);
 }
