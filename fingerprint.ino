@@ -3,7 +3,7 @@
 
 #define SERIAL_PINS 5,4
 #define LED_RED 13
-#define LED_GREEN 12 //12
+#define LED_GREEN 12
 #define LED_BLUE 14
 #define BUTTON_PIN 16
 
@@ -29,21 +29,23 @@ void(* resetFunc) (void) = 0;
 
 void setup()
 {
+    delay(1000);
     Serial.begin(115200);
     pinMode(LED_RED, OUTPUT);
     pinMode(LED_GREEN, OUTPUT);
     pinMode(LED_BLUE, OUTPUT);
     pinMode(BUTTON_PIN, INPUT_PULLUP);
     delay(200);
-    update_led_status(HOLD, RED, 100);
+    update_led_status(HOLD, RED, 200);
+    //update_led_status(FADE, WHITE, 400);
     finger.begin(57600);
     delay(200);         //TODO: WAITING LIBRARY
     if (finger.verifyPassword()) { 
         update_led_status(HOLD, GREEN, 300);
-        delay(300);
+        delay(350);
     } else {
         for (;;) {
-            PRINT("FINGERPRINT SENSOR CONNECTION ERROR");
+            PRINTLN("FINGERPRINT SENSOR CONNECTION ERROR");
             update_led_status(HOLD, RED, 2000);
             delay(2500);
         }

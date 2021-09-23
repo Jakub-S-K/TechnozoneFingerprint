@@ -51,7 +51,8 @@ struct led_status
 {
     color_struct color;
     MODES mode;
-} RGB{{255, 255, 255}, HOLD};
+    bool invert;
+} RGB{{255, 255, 255}, HOLD, false};
 
 color_struct translate_colors(COLORS c)
 {
@@ -77,12 +78,17 @@ color_struct invert_colors(color_struct c)
     return {255 - c.c[0], 255 - c.c[1], 255 - c.c[2]};
 }
 
-void set_led(const color_struct &color)
+void set_led(color_struct color)
 {
-    //PRINT("set_led");
+    if (RGB.invert)
+        color = invert_colors(color);
+        
+    PRINT("[set_led] ");
     PRINT(color.c[0]);
+    PRINT(" ");
     PRINT(color.c[1]);
-    PRINT(color.c[2]);
+    PRINT(" ");
+    PRINTLN(color.c[2]);
     analogWrite(LED_RED,   color.c[0]);
     analogWrite(LED_GREEN, color.c[1]);
     analogWrite(LED_BLUE,  color.c[2]);
@@ -90,7 +96,7 @@ void set_led(const color_struct &color)
 
 void IRAM_ATTR rgb_led_handler()
 {
-    PRINT("[HOHO] interrupt!");
+    PRINTLN("[HOHO] interrupt! ");
     static bool status = false;
     if (RGB.mode != BLINK)
         status = true;
@@ -116,22 +122,31 @@ void IRAM_ATTR rgb_led_handler()
         }
         break;
     case HOLD:
+        static bool first_time = true;
+        if (!first_time){
+            set_led(translate_colors(BLACK));
+            ITimer.detachInterrupt();
+            first_time = true;
+            break;
+        }
         set_led(RGB.color);
-        ITimer.detachInterrupt();
+        first_time = false;
         break;
     default:
         break;
     }
 }
 
-void update_led_status(MODES mode, COLORS color, uint32_t time = 2000, bool invert = true)
+void update_led_status(MODES mode, COLORS color, uint32_t time = 2000, bool invert = false)
 {
-    RGB.color = invert ? invert_colors(translate_colors(color)) : translate_colors(color);
-    Serial.print("update_led_status RGB: ");
-    Serial.print(RGB.color.c[0]);
-    Serial.print(RGB.color.c[1]);
-    Serial.println(RGB.color.c[2]);
+    //RGB.color = invert ? invert_colors(translate_colors(color)) : translate_colors(color);
+    RGB.color = translate_colors(color);
+    PRINT("update_led_status RGB: ");
+    PRINT(RGB.color.c[0]);
+    PRINT(RGB.color.c[1]);
+    PRINTLN(RGB.color.c[2]);
     RGB.mode = mode;
+    ITimer.restartTimer();
     if (mode == FADE)
         ITimer.attachInterruptInterval(time * 1000 / 256, rgb_led_handler);
     else if (mode == BLINK) {
