@@ -7,18 +7,17 @@
 #define LED_BLUE 14
 #define BUTTON_PIN 16
 
-//#define DEBUG
+#define DEBUG
 
 #ifdef DEBUG
-#define PRINT(X) Serial.print(X);
-#define PRINTLN(X) Serial.println(X);
-#endif
-#ifndef DEBUG
+#define PRINT(X) Serial.print(X)
+#define PRINTLN(X) Serial.println(X)
+#else
 #define PRINT(X) 
 #define PRINTLN(X) 
 #endif
 
-#include "led_interrupt.cpp"
+#include "led_interrupt.hpp"
 
 SoftwareSerial mySerial(SERIAL_PINS);
 Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
@@ -44,7 +43,7 @@ void setup()
         delay(300);
     } else {
         for (;;) {
-            PRINT("FINGERPRINT SENSOR CONNECTION ERROR")
+            PRINT("FINGERPRINT SENSOR CONNECTION ERROR");
             update_led_status(HOLD, RED, 2000);
             delay(2500);
         }
@@ -64,7 +63,7 @@ void loop()
 }
 
 int get_finger() {
-  PRINT("FREE FINGERPRINT SLOT")
+  PRINT("FREE FINGERPRINT SLOT");
   for (int i = 50; i < 128; ++i) {
       uint8_t p = finger.loadModel(i);
       switch (p) {

@@ -79,10 +79,10 @@ color_struct invert_colors(color_struct c)
 
 void set_led(const color_struct &color)
 {
-    PRINT("set_led")
-    PRINT(color.c[0])
-    PRINT(color.c[1])
-    PRINT(color.c[2])
+    //PRINT("set_led");
+    PRINT(color.c[0]);
+    PRINT(color.c[1]);
+    PRINT(color.c[2]);
     analogWrite(LED_RED,   color.c[0]);
     analogWrite(LED_GREEN, color.c[1]);
     analogWrite(LED_BLUE,  color.c[2]);
@@ -90,7 +90,7 @@ void set_led(const color_struct &color)
 
 void IRAM_ATTR rgb_led_handler()
 {
-    PRINT("[HOHO] interrupt!")
+    PRINT("[HOHO] interrupt!");
     static bool status = false;
     if (RGB.mode != BLINK)
         status = true;
