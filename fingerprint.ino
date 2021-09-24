@@ -42,23 +42,23 @@ void setup()
 void loop()
 {
     if (!digitalRead(BUTTON_PIN)) {
-      PRINTLN("[loop] key inserted");
+      PRINTLN("[loop] Key inserted");
       for (;;) {
           add_fingerprint();
       }
-      PRINTLN("[loop] fingerprint added");
+      PRINTLN("[loop] Fingerprint added");
     } else {
-      PRINTLN("[loop] key not inserted");
+      PRINTLN("[loop] Key not inserted");
       scan_fingerprint();
       delay(400);
     }
 }
 
 int get_finger() {
-  PRINTLN("[get_finger] searching for empty slot");
+  PRINTLN("[get_finger] Searching for empty slot");
   for (int i = 50; i < 128; ++i) {
-      uint8_t p = finger.loadModel(i);
-      switch (p) {
+      uint8_t status_code = finger.loadModel(i);
+      switch (status_code) {
         case FINGERPRINT_OK:
           break;
         case FINGERPRINT_PACKETRECIEVEERR:
@@ -79,18 +79,18 @@ void add_fingerprint() {
     int index = get_finger();
     if(try_add_new_finger(index))
     {
-      PRINTLN("[add_fingerprint] resseting via function pointer");
+      PRINTLN("[add_fingerprint] Resseting via function pointer");
       resetFunc();
     }
 }
 
 bool try_add_new_finger(const int &id) {
-  int p = -1;
+  int status_code = -1;
   update_led_status(BLINK, WHITE, 1000000);
   PRINTLN("[try_add_new_finger] Put finger on sensor");
-  while (p != FINGERPRINT_OK) {
-    p = finger.getImage();
-    switch (p) {
+  while (status_code != FINGERPRINT_OK) {
+    status_code = finger.getImage();
+    switch (status_code) {
     case FINGERPRINT_OK:
       update_led_status(HOLD, GREEN, 2000);
       PRINTLN("[try_add_new_finger] Finger found");
@@ -101,66 +101,66 @@ bool try_add_new_finger(const int &id) {
     }
   }
   delay(2000);
-  p = finger.image2Tz(1);
-  if (p != FINGERPRINT_OK) {
+  status_code = finger.image2Tz(1);
+  if (status_code != FINGERPRINT_OK) {
     PRINTLN("[try_add_new_finger] image2Tz failed");
     return false;
   }
 
-  p = 0;
+  status_code = 0;
   update_led_status(BLINK, WHITE, 1000000);
   PRINTLN("[try_add_new_finger] Put finger again");
-  while (p != FINGERPRINT_NOFINGER) {
-    p = finger.getImage();
+  while (status_code != FINGERPRINT_NOFINGER) {
+    status_code = finger.getImage();
   }
 
-  p = -1;
-  while (p != FINGERPRINT_OK) {
-    p = finger.getImage();
-    if(p == FINGERPRINT_OK)
+  status_code = -1;
+  while (status_code != FINGERPRINT_OK) {
+    status_code = finger.getImage();
+    if(status_code == FINGERPRINT_OK)
         update_led_status(HOLD, GREEN, 2000);
   }
   PRINTLN("[try_add_new_finger] Finger found");
   delay(2000);
 
-  p = finger.image2Tz(2);
-  if (p != FINGERPRINT_OK) {
+  status_code = finger.image2Tz(2);
+  if (status_code != FINGERPRINT_OK) {
     PRINTLN("[try_add_new_finger] image2Tz failed");
     return false;
   }
 
-  p = finger.createModel();
-  if (p != FINGERPRINT_OK)
+  status_code = finger.createModel();
+  if (status_code != FINGERPRINT_OK)
     return false;
   PRINTLN("[try_add_new_finger] Model created");
-  p = finger.storeModel(id);
-  if (p != FINGERPRINT_OK)
+  status_code = finger.storeModel(id);
+  if (status_code != FINGERPRINT_OK)
     return false;
   PRINTLN("[try_add_new_finger] Finger model stored");
   return true;
 }
 
 void scan_fingerprint() {
-  uint8_t p = finger.getImage();
+  uint8_t status_code = finger.getImage();
   PRINTLN("[scan_fingerprint] Checking if finger on sensor");
-  if (p != FINGERPRINT_OK)
+  if (status_code != FINGERPRINT_OK)
     return;
   PRINTLN("[scan_fingerprint] Finger found");
-  p = finger.image2Tz();
-  if (p != FINGERPRINT_OK){
+  status_code = finger.image2Tz();
+  if (status_code != FINGERPRINT_OK){
     PRINTLN("[scan_fingerprint] image2Tz failed");
     return;
   }
 
-  p = finger.fingerSearch();
-  if (p != FINGERPRINT_OK){
-    PRINTLN("[scan_fingerprint] finger has not been found in database");
+  status_code = finger.fingerSearch();
+  if (status_code != FINGERPRINT_OK){
+    PRINTLN("[scan_fingerprint] Finger has not been found in database");
     return;
   }
-  PRINTLN("[scan_fingerprint] finger has been found in database");
+  PRINTLN("[scan_fingerprint] Finger has been found in database");
   PRINTLN("[scan_fingerprint] Relay open");
   digitalWrite(BUTTON_PIN, LOW);
   delay(2000);
-  PRINTLN("[scan_fingerprint] Relya closed");
+  PRINTLN("[scan_fingerprint] Relay closed");
   digitalWrite(BUTTON_PIN, HIGH);
 }
