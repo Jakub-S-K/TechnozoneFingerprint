@@ -83,12 +83,12 @@ void set_led(color_struct color)
     if (RGB.invert)
         color = invert_colors(color);
         
-    PRINT("[set_led] ");
-    PRINT(color.c[0]);
-    PRINT(" ");
-    PRINT(color.c[1]);
-    PRINT(" ");
-    PRINTLN(color.c[2]);
+    //PRINT("[set_led] ");
+    //PRINT(color.c[0]);
+    //PRINT(" ");
+    //PRINT(color.c[1]);
+    //PRINT(" ");
+    //PRINTLN(color.c[2]);
     analogWrite(LED_RED,   color.c[0]);
     analogWrite(LED_GREEN, color.c[1]);
     analogWrite(LED_BLUE,  color.c[2]);
@@ -96,7 +96,7 @@ void set_led(color_struct color)
 
 void IRAM_ATTR rgb_led_handler()
 {
-    PRINTLN("[HOHO] interrupt! ");
+    //PRINTLN("[HOHO] interrupt! ");
     static bool status = false;
     if (RGB.mode != BLINK)
         status = true;
@@ -112,8 +112,8 @@ void IRAM_ATTR rgb_led_handler()
     case FADE:
         set_led(RGB.color);
         RGB.color -= 1;
-        PRINT("po ");
-        PRINTLN(RGB.color.c[0]);
+        //PRINT("po ");
+        //PRINTLN(RGB.color.c[0]);
         
         if (RGB.color == 0)
         {
@@ -141,10 +141,10 @@ void update_led_status(MODES mode, COLORS color, uint32_t time = 2000, bool inve
 {
     //RGB.color = invert ? invert_colors(translate_colors(color)) : translate_colors(color);
     RGB.color = translate_colors(color);
-    PRINT("update_led_status RGB: ");
-    PRINT(RGB.color.c[0]);
-    PRINT(RGB.color.c[1]);
-    PRINTLN(RGB.color.c[2]);
+    //PRINT("update_led_status RGB: ");
+    //PRINT(RGB.color.c[0]);
+    //PRINT(RGB.color.c[1]);
+    //PRINTLN(RGB.color.c[2]);
     RGB.mode = mode;
     ITimer.restartTimer();
     if (mode == FADE)
