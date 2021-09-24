@@ -2,9 +2,15 @@
 #include <Adafruit_Fingerprint.h>
 
 #define SERIAL_PINS 5,4
+<<<<<<< HEAD
 #define LED_RED 13
 #define LED_GREEN 12
 #define LED_BLUE 14
+=======
+#define LED_RED D3 //13
+#define LED_GREEN D4 //12
+#define LED_BLUE D6 //14
+>>>>>>> b2683a5a6bcdbb74a5bf004109ee938a26a0d491
 #define BUTTON_PIN 16
 
 #define DEBUG
