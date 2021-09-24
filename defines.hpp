@@ -7,8 +7,6 @@
 #define LED_BLUE 14
 #define BUTTON_PIN 16
 
-#define DEBUG
-
 #ifdef DEBUG
 #define PRINT(X) Serial.print(X)
 #define PRINTLN(X) Serial.println(X)
