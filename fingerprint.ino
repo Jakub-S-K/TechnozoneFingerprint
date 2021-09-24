@@ -1,22 +1,7 @@
 //#include <Arduino.h>
 #include <Adafruit_Fingerprint.h>
 
-#define SERIAL_PINS 5,4
-#define LED_RED 13
-#define LED_GREEN 12
-#define LED_BLUE 14
-#define BUTTON_PIN 16
-
-#define DEBUG
-
-#ifdef DEBUG
-#define PRINT(X) Serial.print(X)
-#define PRINTLN(X) Serial.println(X)
-#else
-#define PRINT(X) 
-#define PRINTLN(X) 
-#endif
-
+#include "defines.hpp"
 #include "led_interrupt.hpp"
 
 SoftwareSerial mySerial(SERIAL_PINS);
