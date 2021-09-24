@@ -37,7 +37,7 @@ struct led_status
 
 void operator*(color_struct &a, float &mult);
 void operator-=(color_struct &a, const int8_t &dimm);
-bool operator==(const color_struct &a, const int_8t &b);
+bool operator==(const color_struct &a, const int8_t &b);
 
 color_struct translate_colors(COLORS c);
 color_struct invert_colors(color_struct c);

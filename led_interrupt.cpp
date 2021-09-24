@@ -3,19 +3,18 @@
 
 void operator*(color_struct &a, float &mult)
 {
-    a.c[0] = (uint8_t)(a.c[0] * mult);
-    a.c[1] = (uint8_t)(a.c[1] * mult);
-    a.c[2] = (uint8_t)(a.c[2] * mult);
+    a.rgb[0] = (uint8_t)(a.rgb[0] * mult);
+    a.rgb[1] = (uint8_t)(a.rgb[1] * mult);
+    a.rgb[2] = (uint8_t)(a.rgb[2] * mult);
 }
 void operator-=(color_struct &a, const int8_t &dimm)
 {
-    a.c[0] = ((int)a.c[0] - dimm) <= 0 ? 0 : a.c[0] - dimm;
-    a.c[1] = ((int)a.c[1] - dimm) <= 0 ? 0 : a.c[1] - dimm;
-    a.c[2] = ((int)a.c[2] - dimm) <= 0 ? 0 : a.c[2] - dimm;
-    //                    ((int)a.c[2] - dimm) <= 0 ? 0 : a.c[2] - dimm};
+    a.rgb[0] = ((int)a.rgb[0] - dimm) <= 0 ? 0 : a.rgb[0] - dimm;
+    a.rgb[1] = ((int)a.rgb[1] - dimm) <= 0 ? 0 : a.rgb[1] - dimm;
+    a.rgb[2] = ((int)a.rgb[2] - dimm) <= 0 ? 0 : a.rgb[2] - dimm;
 }
 bool operator==(const color_struct &a, const int8_t &b) {
-    if (a.c[0] == b && a.c[1] == b && a.c[2] == b)
+    if (a.rgb[0] == b && a.rgb[1] == b && a.rgb[2] == b)
         return true;
     return false;
 }
@@ -41,7 +40,7 @@ color_struct translate_colors(COLORS color)
 
 color_struct invert_colors(color_struct color)
 {
-    return {255 - color.rgb[0], 255 - color.rgb[1], 255 - color.rbg[2]};
+    return {255 - color.rgb[0], 255 - color.rgb[1], 255 - color.rgb[2]};
 }
 
 void set_led(color_struct color)
@@ -83,9 +82,9 @@ void IRAM_ATTR rgb_led_handler()
         set_led(led.color);
         led.color -= 1;
         PRINT("po ");
-        PRINTLN(RGB.color.c[0]);
+        PRINTLN(led.color.rgb[0]);
         
-        if (RGB.color == 0)
+        if (led.color == 0)
         {
             //TODO FADE is not working properly. Interrupt crash
             ITimer.detachInterrupt();
