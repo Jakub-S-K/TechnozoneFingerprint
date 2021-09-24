@@ -9,22 +9,26 @@ ESP8266Timer ITimer;
 
 enum MODES
 {
-    BLINK,
+    BLINK = 0,
     FADE,
     HOLD
 };
 
 enum COLORS
 {
-    BLACK,
+    BLACK = 0,
     WHITE,
     RED,
     GREEN,
     BLUE
 };
 
-struct color_struct
-{
+union color_struct {
+    struct {
+        uint8_t r;
+        uint8_t g;
+        uint8_t b;
+    };
     uint8_t rgb[3];
 };
 

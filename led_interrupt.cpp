@@ -3,18 +3,18 @@
 
 void operator*(color_struct &a, float &mult)
 {
-    a.rgb[0] = (uint8_t)(a.rgb[0] * mult);
-    a.rgb[1] = (uint8_t)(a.rgb[1] * mult);
-    a.rgb[2] = (uint8_t)(a.rgb[2] * mult);
+    a.r = (uint8_t)(a.r * mult);
+    a.g = (uint8_t)(a.g * mult);
+    a.b = (uint8_t)(a.b * mult);
 }
 void operator-=(color_struct &a, const int8_t &dimm)
 {
-    a.rgb[0] = ((int)a.rgb[0] - dimm) <= 0 ? 0 : a.rgb[0] - dimm;
-    a.rgb[1] = ((int)a.rgb[1] - dimm) <= 0 ? 0 : a.rgb[1] - dimm;
-    a.rgb[2] = ((int)a.rgb[2] - dimm) <= 0 ? 0 : a.rgb[2] - dimm;
+    a.r = ((int16_t) a.r - dimm) <= 0 ? 0 : a.r - dimm;
+    a.g = ((int16_t) a.g - dimm) <= 0 ? 0 : a.g - dimm;
+    a.b = ((int16_t) a.b - dimm) <= 0 ? 0 : a.b - dimm;
 }
 bool operator==(const color_struct &a, const int8_t &b) {
-    if (a.rgb[0] == b && a.rgb[1] == b && a.rgb[2] == b)
+    if (a.r == b && a.g == b && a.b == b)
         return true;
     return false;
 }
@@ -40,7 +40,7 @@ color_struct translate_colors(COLORS color)
 
 color_struct invert_colors(color_struct color)
 {
-    return {255 - color.rgb[0], 255 - color.rgb[1], 255 - color.rgb[2]};
+    return {255 - color.r, 255 - color.g, 255 - color.b};
 }
 
 void set_led(color_struct color)
@@ -49,16 +49,15 @@ void set_led(color_struct color)
     {
         color = invert_colors(color);
     }
-        
     PRINT("[set_led] ");
-    PRINT(color.rgb[0]);
+    PRINT(color.r);
     PRINT(" ");
-    PRINT(color.rgb[1]);
+    PRINT(color.g);
     PRINT(" ");
-    PRINTLN(color.rgb[2]);
-    analogWrite(LED_RED,   color.rgb[0]);
-    analogWrite(LED_GREEN, color.rgb[1]);
-    analogWrite(LED_BLUE,  color.rgb[2]);
+    PRINTLN(color.b);
+    analogWrite(LED_RED,   color.r);
+    analogWrite(LED_GREEN, color.g);
+    analogWrite(LED_BLUE,  color.b);
 }
 
 void IRAM_ATTR rgb_led_handler()
@@ -82,7 +81,7 @@ void IRAM_ATTR rgb_led_handler()
         set_led(led.color);
         led.color -= 1;
         PRINT("po ");
-        PRINTLN(led.color.rgb[0]);
+        PRINTLN(led.color.r);
         
         if (led.color == 0)
         {
@@ -113,9 +112,9 @@ void update_led_status(MODES mode, COLORS color, uint32_t time = 2000, bool inve
     #endif // EXTRA_INVERT
     led.color = translate_colors(color);
     PRINT("update_led_status RGB: ");
-    PRINT(led.color.rgb[0]);
-    PRINT(led.color.rgb[1]);
-    PRINTLN(led.color.rgb[2]);
+    PRINT(led.color.r);
+    PRINT(led.color.g);
+    PRINTLN(led.color.b);
     led.mode = mode;
     ITimer.restartTimer();
     if (mode == FADE)
