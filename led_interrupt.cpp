@@ -83,9 +83,9 @@ void IRAM_ATTR rgb_led_handler()
         set_led(led.color);
         led.color -= 1;
         PRINT("po ");
-        PRINTLN(RGB.color.c[0]);
+        PRINTLN(led.color.rgb[0]);
         
-        if (RGB.color == 0)
+        if (led.color == 0)
         {
             //TODO FADE is not working properly. Interrupt crash
             ITimer.detachInterrupt();
