@@ -1,8 +1,8 @@
 //#include <Arduino.h>
 #include <Adafruit_Fingerprint.h>
 
-#include "defines.hpp"
-#include "led_interrupt.hpp"
+#include "defines.h"
+#include "led_interrupt.h"
 
 SoftwareSerial mySerial(SERIAL_PINS);
 Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
@@ -104,7 +104,7 @@ bool try_add_new_finger(const int &id) {
   while (status_code != FINGERPRINT_OK)
   {
     status_code = finger.getImage();
-    switch (status_code)
+    switch (status_code) {
     case FINGERPRINT_OK:
       update_led_status(HOLD, GREEN, 2000);
       PRINTLN("[try_add_new_finger] Finger found");
